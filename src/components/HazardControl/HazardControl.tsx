@@ -9,7 +9,7 @@ export const HazardControl: React.FC<{ selectHazard: () => void, hazardCount: nu
   <TitledContainer title="Hazard">
     <CenteredRow>
       <StyledButton onClick={selectHazard}>
-        <ColourSquare colour="orange" />
+        <ColourSquare colour="red" />
       </StyledButton>
       <span>Hazard Count: {hazardCount}</span>
     </CenteredRow>
