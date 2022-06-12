@@ -16,7 +16,7 @@ export interface IOtherSnakesControl {
   changeSnakeHealth: (value: string, target: string) => void;
 }
 
-export const OtherSnakesControl: React.SFC<IOtherSnakesControl> = ({selectSnake, snakes, addSnake, changeSnakeHealth}) => (
+export const OtherSnakesControl: React.FC<IOtherSnakesControl> = ({selectSnake, snakes, addSnake, changeSnakeHealth}) => (
   <TitledContainer title="Other Snakes">
     <div style={{ minHeight: "68px" }}>
       {snakes.map(snake =>

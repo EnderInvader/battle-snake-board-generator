@@ -4,14 +4,14 @@ import { CenteredRow } from "../CenteredRow/CenteredRow";
 import { StyledButton } from "../StyledButton/StyledButton";
 import { ColourSquare } from "../ColourSquare/ColourSquare";
 
-export const FoodControl: React.FC<{ selectFood: () => void, foodCount: number }> = ({selectFood, foodCount }) => (
+export const HazardControl: React.FC<{ selectHazard: () => void, hazardCount: number }> = ({selectHazard, hazardCount }) => (
 
-  <TitledContainer title="Food">
+  <TitledContainer title="Hazard">
     <CenteredRow>
-      <StyledButton onClick={selectFood}>
+      <StyledButton onClick={selectHazard}>
         <ColourSquare colour="orange" />
       </StyledButton>
-      <span>Food Count: {foodCount}</span>
+      <span>Hazard Count: {hazardCount}</span>
     </CenteredRow>
   </TitledContainer>
 )

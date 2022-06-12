@@ -1,7 +1,7 @@
 import React from "react";
 import "./StyledButton.css";
 
-export const StyledButton: React.SFC<React.ButtonHTMLAttributes<{}> & React.AnchorHTMLAttributes<{}>> = (props) => {
+export const StyledButton: React.FC<React.ButtonHTMLAttributes<{}> & React.AnchorHTMLAttributes<{}>> = (props) => {
   if (props.href) {
     return <a {...props}>
       <button tabIndex={-1} className="styled-button">

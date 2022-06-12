@@ -5,7 +5,7 @@ interface ITitledContainer {
   title: string;
 }
 
-export const TitledContainer: React.SFC<ITitledContainer> = ({ title, children }) => {
+export const TitledContainer: React.FC<ITitledContainer> = ({ title, children }) => {
   return (
     <div>
       <div className="titled-container">
