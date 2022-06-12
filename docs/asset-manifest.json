@@ -1,13 +1,13 @@
 {
-  "main.css": "/static/css/main.5899760b.chunk.css",
-  "main.js": "/static/js/main.4559e7d3.chunk.js",
-  "main.js.map": "/static/js/main.4559e7d3.chunk.js.map",
-  "static/js/1.5cb9b55e.chunk.js": "/static/js/1.5cb9b55e.chunk.js",
-  "static/js/1.5cb9b55e.chunk.js.map": "/static/js/1.5cb9b55e.chunk.js.map",
-  "runtime~main.js": "/static/js/runtime~main.229c360f.js",
-  "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
-  "static/css/main.5899760b.chunk.css.map": "/static/css/main.5899760b.chunk.css.map",
-  "index.html": "/index.html",
-  "precache-manifest.16e2ad591e6d6ac7cb7717c276da50ac.js": "/precache-manifest.16e2ad591e6d6ac7cb7717c276da50ac.js",
-  "service-worker.js": "/service-worker.js"
+  "main.css": "/battle-snake-board-generator/static/css/main.b8e4541c.chunk.css",
+  "main.js": "/battle-snake-board-generator/static/js/main.45b9a335.chunk.js",
+  "main.js.map": "/battle-snake-board-generator/static/js/main.45b9a335.chunk.js.map",
+  "static/js/1.5cb9b55e.chunk.js": "/battle-snake-board-generator/static/js/1.5cb9b55e.chunk.js",
+  "static/js/1.5cb9b55e.chunk.js.map": "/battle-snake-board-generator/static/js/1.5cb9b55e.chunk.js.map",
+  "runtime~main.js": "/battle-snake-board-generator/static/js/runtime~main.f8ccee89.js",
+  "runtime~main.js.map": "/battle-snake-board-generator/static/js/runtime~main.f8ccee89.js.map",
+  "static/css/main.b8e4541c.chunk.css.map": "/battle-snake-board-generator/static/css/main.b8e4541c.chunk.css.map",
+  "index.html": "/battle-snake-board-generator/index.html",
+  "precache-manifest.2a7832d8ab900a66c42d02f66973a322.js": "/battle-snake-board-generator/precache-manifest.2a7832d8ab900a66c42d02f66973a322.js",
+  "service-worker.js": "/battle-snake-board-generator/service-worker.js"
 }
