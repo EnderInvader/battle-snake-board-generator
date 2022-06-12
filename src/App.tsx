@@ -14,7 +14,7 @@ import { TestSnake } from './components/TestSnake/TestSnake';
 import { CenteredRow } from './components/CenteredRow/CenteredRow';
 import { ColourSquare } from './components/ColourSquare/ColourSquare';
 import { FoodControl } from './components/FoodControl/FoodControl';
-import { HazardControl } from './components/HazardControl/HazardControl';
+import { HazardsControl } from './components/HazardsControl/HazardsControl';
 import { YouControl } from './components/YouControl/YouControl';
 import { OtherSnakesControl } from './components/OtherSnakesControl/OtherSnakesControl';
 
@@ -23,7 +23,7 @@ interface IAppState {
 	height: string;
 	width: string;
 	food: ICoordinate[];
-	hazard: ICoordinate[];
+	hazards: ICoordinate[];
 	snakes: {
 		id: string;
 		colour: string;
@@ -36,7 +36,7 @@ interface IAppState {
 		health: string;
 		id: "you";
 	};
-	mode: "food" | "hazard" | "you" | "snake";
+	mode: "food" | "hazards" | "you" | "snake";
 	chosenId: string;
 }
 
@@ -50,7 +50,7 @@ class App extends Component<{}, IAppState> {
 			height: "11",
 			width: "11",
 			food: [],
-			hazard: [],
+			hazards: [],
 			snakes: [],
 			you: {
 				colour: "#22aa34",
@@ -64,7 +64,7 @@ class App extends Component<{}, IAppState> {
 	}
 
 	private findExistingCell = (id: string, x: number, y: number) => {
-		const { food, hazard, you, snakes } = this.state;
+		const { food, hazards, you, snakes } = this.state;
 
 		switch (id) {
 			case "food":
@@ -72,10 +72,10 @@ class App extends Component<{}, IAppState> {
 					id: "food",
 					index: food.findIndex(item => item.x === x && item.y === y)
 				};
-			case "hazard":
+			case "hazards":
 				return {
-					id: "hazard",
-					index: hazard.findIndex(item => item.x === x && item.y === y)
+					id: "hazards",
+					index: hazards.findIndex(item => item.x === x && item.y === y)
 				};
 			case "you":
 				return {
@@ -101,7 +101,7 @@ class App extends Component<{}, IAppState> {
 
 	public selectCell = (x: number, y: number, id: string) => {
 
-		const { mode, food, hazard, you, snakes, chosenId } = this.state;
+		const { mode, food, hazards, you, snakes, chosenId } = this.state;
 		let existingIndex: {
 			id: string;
 			index: number;
@@ -115,8 +115,8 @@ class App extends Component<{}, IAppState> {
 				case "food":
 					food.splice(existingIndex.index, 1);
 					break;
-				case "hazard":
-					hazard.splice(existingIndex.index, 1);
+				case "hazards":
+					hazards.splice(existingIndex.index, 1);
 					break;
 				case "you":
 					you.body.splice(existingIndex.index);
@@ -135,8 +135,8 @@ class App extends Component<{}, IAppState> {
 				case "food":
 					food.push({ x, y });
 					break;
-				case "hazard":
-					hazard.push({ x, y });
+				case "hazards":
+					hazards.push({ x, y });
 					break;
 				case "you":
 					if (you.body.length === 0 || this.checkIfCellConnected(x, y, you.body)) {
@@ -155,7 +155,7 @@ class App extends Component<{}, IAppState> {
 			}
 		}
 
-		this.setState({ mode, food, hazard, you, snakes, chosenId });
+		this.setState({ mode, food, hazards, you, snakes, chosenId });
 	}
 
 	private buildBoardState: () => IBoardState = () => {
@@ -164,11 +164,13 @@ class App extends Component<{}, IAppState> {
 				id: this.state.id,
 				ruleset: {
 					name: "standard",
-					version: "v.1.2.3"
+					version: "Board Generator"
 				},
-				timeout: 500
+				map: "",
+				timeout: 500,
+				source: "",
 			},
-			turn: 200,
+			turn: 123,
 			you: {
 				health: parseInt(this.state.you.health, 10),
 				id: "you",
@@ -179,7 +181,7 @@ class App extends Component<{}, IAppState> {
 			},
 			board: {
 				food: this.state.food,
-				hazard: this.state.hazard,
+				hazards: this.state.hazards,
 				height: parseInt(this.state.height, 10),
 				width: parseInt(this.state.width, 10),
 				snakes: [{
@@ -228,9 +230,9 @@ class App extends Component<{}, IAppState> {
 		});
 	}
 
-	public selectHazard = () => {
+	public selectHazards = () => {
 		this.setState({
-			mode: "hazard",
+			mode: "hazards",
 			chosenId: ""
 		});
 	}
@@ -270,7 +272,7 @@ class App extends Component<{}, IAppState> {
 				height: uploadedState.board.height.toString(),
 				width: uploadedState.board.width.toString(),
 				food: uploadedState.board.food,
-				hazard: uploadedState.board.hazard,
+				hazards: uploadedState.board.hazards,
 				snakes: uploadedState.board.snakes.filter(snake => snake.id !== uploadedState.you.id).map(snake => {
 					const colour: string = generateColour();
 					return {
@@ -296,7 +298,7 @@ class App extends Component<{}, IAppState> {
 
 	render() {
 
-		const { height, width, snakes, you, food, hazard, mode, chosenId } = this.state;
+		const { height, width, snakes, you, food, hazards, mode, chosenId } = this.state;
 
 		return (
 			<div className="App">
@@ -304,7 +306,7 @@ class App extends Component<{}, IAppState> {
 					<YouControl selectYou={this.selectYou} colour={you.colour} health={you.health} changeHealth={(value) => this.changeSnakeHealth(value, "you")} />
 					<OtherSnakesControl addSnake={this.addSnake} changeSnakeHealth={this.changeSnakeHealth} selectSnake={this.selectSnake} snakes={snakes} />
 					<FoodControl foodCount={food.length} selectFood={this.selectFood} />
-					<HazardControl hazardCount={hazard.length} selectHazard={this.selectHazard} />
+					<HazardsControl hazardsCount={hazards.length} selectHazards={this.selectHazards} />
 					<BoardControls
 						boardState={this.buildBoardState()}
 						changeHeight={this.changeBoardHeight}
@@ -319,7 +321,7 @@ class App extends Component<{}, IAppState> {
 				<div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
 					<TitledContainer title="Current Mode">
 						<div className="current-mode">
-							<ColourSquare colour={mode === "food" ? "orange" : mode === "hazard" ? "red" : mode === "you" ? "#22aa34" : chosenId} />
+							<ColourSquare colour={mode === "food" ? "orange" : mode === "hazards" ? "red" : mode === "you" ? "#22aa34" : chosenId} />
 							<span style={{ marginLeft: 10 }}>{mode !== "snake" ? mode : chosenId}</span>
 						</div>
 					</TitledContainer>

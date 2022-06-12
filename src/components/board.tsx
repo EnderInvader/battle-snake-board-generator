@@ -49,8 +49,8 @@ const generateBoard = (boardState: IBoardState, onChange: (x: number, y: number,
 
       if (boardState.board.food.some(food => food.x === x && food.y === y)) {
         output[boardState.board.height -1 - y].push(<CellComponent key={`${x},${boardState.board.height -1 - y}`} colour="orange" onChange={() => onChange(x, y, "food")} />)
-			} else if (boardState.board.hazard.some(hazard => hazard.x === x && hazard.y === y)) {
-        output[boardState.board.height -1 - y].push(<CellComponent key={`${x},${boardState.board.height -1 - y}`} colour="red" onChange={() => onChange(x, y, "hazard")} />)
+			} else if (boardState.board.hazards.some(hazards => hazards.x === x && hazards.y === y)) {
+        output[boardState.board.height -1 - y].push(<CellComponent key={`${x},${boardState.board.height -1 - y}`} colour="red" onChange={() => onChange(x, y, "hazards")} />)
 			} else if (snakePiece !== undefined) {
         let id: string = snakePiece.id;
         output[boardState.board.height -1 - y].push(<CellComponent key={`${x},${boardState.board.height -1 - y}`} colour={snakePiece.colour} isHead={snakePiece.isHead} onChange={() => onChange(x,  y, id)} />)

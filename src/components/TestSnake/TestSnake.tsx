@@ -21,7 +21,7 @@ export class TestSnake extends React.Component<ITestSnakeProps, ITestSnakeState>
     super(props);
 
     this.state = {
-      url: "http://localhost:5000/move"
+      url: "http://localhost:8080/move"
     }
   }
 
