@@ -19,6 +19,7 @@ import { YouControl } from './components/YouControl/YouControl';
 import { OtherSnakesControl } from './components/OtherSnakesControl/OtherSnakesControl';
 import { IRuleset } from './types/IRuleset.interface';
 import { getChangelog } from './components/changelog';
+import { RulesetControls } from './components/RulesetControls/RulesetControls';
 
 interface IAppState {
 	id: string;
@@ -179,14 +180,11 @@ class App extends Component<{}, IAppState> {
 					name: this.state.ruleset.name,
 					version: "Board Generator",
 					settings: {
-						/*foodSpawnChance: this.state.ruleset.settings.foodSpawnChance,
+						foodSpawnChance: this.state.ruleset.settings.foodSpawnChance,
 						minimumFood: this.state.ruleset.settings.foodSpawnChance,
 						hazardDamagePerTurn: this.state.ruleset.settings.hazardDamagePerTurn,
-						hazardMap: this.state.ruleset.settings.hazardMap,
+						/*hazardMap: this.state.ruleset.settings.hazardMap,
 						hazardMapAuthor: this.state.ruleset.settings.hazardMapAuthor,*/
-						foodSpawnChance: 15,
-						minimumFood: 1,
-						hazardDamagePerTurn: 14,
 						hazardMap: "",
 						hazardMapAuthor: "",
 						royale: {
@@ -304,10 +302,24 @@ class App extends Component<{}, IAppState> {
 	}
 
 	public changeBoardHeight = (height: string) => this.setState({ height });
-
 	public changeBoardWidth = (width: string) => this.setState({ width });
 
-	public changeGamemode = (value: string) => {
+	public changeRulesetName = (value: string) => {
+		const { ruleset } = this.state;
+		ruleset.name = value
+		this.setState({ ruleset })
+	}
+	public changeFoodSpawn = (value: string) => {
+		const { ruleset } = this.state;
+		ruleset.name = value
+		this.setState({ ruleset })
+	}
+	public changeMinFood = (value: string) => {
+		const { ruleset } = this.state;
+		ruleset.name = value
+		this.setState({ ruleset })
+	}
+	public changeHazardDamage = (value: string) => {
 		const { ruleset } = this.state;
 		ruleset.name = value
 		this.setState({ ruleset })
@@ -366,9 +378,14 @@ class App extends Component<{}, IAppState> {
 						changeWidth={this.changeBoardWidth}
 						height={height}
 						width={width}
-						ruleset={ruleset}
 						uploadBoard={this.uploadBoard}
-						changeGamemode={this.changeGamemode}
+					/>
+					<RulesetControls
+						ruleset={ruleset}
+						changeName={this.changeRulesetName}
+						changeFoodSpawn={this.changeFoodSpawn}
+						changeMinFood={this.changeMinFood}
+						changeHazardDamage={this.changeHazardDamage}
 					/>
 					<TestSnake boardState={this.buildBoardState()} />
 				</div>

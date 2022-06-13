@@ -5,7 +5,7 @@ export const generateColour: () => string = () => {
   return '#FF' + Math.round(Math.random() * max).toString(16);
 }
 
-export const onChangeNumberLimitFactory = (target: (...arg: any) => void, max: number = 50, min: number = 2) => {
+export const onChangeNumberLimitFactory = (target: (...arg: any) => void, max: number = 100, min: number = 0) => {
   return (event: React.ChangeEvent<HTMLInputElement>, ) => {
     let value = event.target.value;
 

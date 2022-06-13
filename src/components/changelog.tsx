@@ -8,10 +8,12 @@ export function getChangelog() {
 						<hr></hr>
 						<p>v3.0</p><p>New update: Hazards!, along side an updated framework and<br></br>Battlesnake json format</p>
 						<hr></hr>
-						<p>v3.1</p><p>New update: Gamemodes!, hazard damager per turn is locked at 14</p>
+						<p>v3.1</p><p>New update: Gamemodes!, hazard damage per turn is locked at 14</p>
+						<hr></hr>
+						<p>v3.2</p><p>New update: Rulesets!</p>
 						
 						<br></br>
 						<hr></hr>
-						<p>Upcoming</p><p>Maps, More Ruleset settings</p>
+						<p>Upcoming</p><p>Maps, Customizations</p>
 					</TitledContainer>
 }
