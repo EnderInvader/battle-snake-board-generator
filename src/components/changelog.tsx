@@ -14,6 +14,6 @@ export function getChangelog() {
 						
 						<br></br>
 						<hr></hr>
-						<p>Upcoming</p><p>Maps, Customizations</p>
+						<p>Upcoming</p><p>Maps, Customizations, Fix Test Snake</p>
 					</TitledContainer>
 }

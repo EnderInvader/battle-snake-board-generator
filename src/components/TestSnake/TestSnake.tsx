@@ -55,7 +55,7 @@ export class TestSnake extends React.Component<ITestSnakeProps, ITestSnakeState>
     const { response, url } = this.state;
 
     return (
-      <TitledContainer title="Test Snake">
+      <TitledContainer title="Test Snake (Broken)">
         <CenteredRow>
           <StyledInput title="URL" value={url} onChange={event => this.setState({ url: event.target.value })} />
           {response && <span>Move: {response}</span>}
