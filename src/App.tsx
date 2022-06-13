@@ -388,6 +388,19 @@ class App extends Component<{}, IAppState> {
 						changeHazardDamage={this.changeHazardDamage}
 					/>
 					<TestSnake boardState={this.buildBoardState()} />
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					<br></br>
+					{getChangelog()}
 				</div>
 				<div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
 					<TitledContainer title="Current Mode">
@@ -397,9 +410,6 @@ class App extends Component<{}, IAppState> {
 						</div>
 					</TitledContainer>
 					<Board boardState={this.buildBoardState()} onChange={this.selectCell} />
-					<br></br>
-					<br></br>
-					{getChangelog()}
 				</div>
 			</div>
 		);
