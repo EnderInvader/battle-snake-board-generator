@@ -5,7 +5,7 @@ export const generateColour: () => string = () => {
   return '#FF' + Math.round(Math.random() * max).toString(16);
 }
 
-export const onChangeNumberLimitFactory = (target: (...arg: any) => void, max: number = 1000, min: number = 0) => {
+export const onChangeNumberLimitFactory = (target: (...arg: any) => void, max: number = 50, min: number = 2) => {
   return (event: React.ChangeEvent<HTMLInputElement>, ) => {
     let value = event.target.value;
 
@@ -36,4 +36,4 @@ export const onBlurSetMinimumFactory = (target: (...arg: any) => void, min: numb
   }
 }
 
-export const generateId = () => Math.floor((Math.random() * 1000000)).toString()
+export const generateId = () => "board-generator " + Math.floor((Math.random() * 1000000)).toString()

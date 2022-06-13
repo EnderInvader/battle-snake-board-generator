@@ -1,4 +1,5 @@
 import { ICoordinate } from "./ICoordinate.type";
+import { IRuleset } from "./IRuleset.interface";
 import { ISnake } from "./ISnake.interface";
 
 export interface IBoardState {
@@ -11,6 +12,7 @@ export interface IBoardState {
   };
   game: {
     id: string;
+		ruleset: IRuleset;
   };
   turn: number;
   you: ISnake;

@@ -5,6 +5,8 @@ import { StyledButton } from "../StyledButton/StyledButton";
 import { CenteredRow } from "../CenteredRow/CenteredRow";
 import { TitledContainer } from "../TitledContainer/TitledContainer";
 import { IBoardState } from "../../types/IBoardState.interface";
+import { IRuleset } from "../../types/IRuleset.interface";
+import { StyledDropdown } from "../StyledDropdown/StyledDropdown";
 
 export interface IBoardControls {
   height: string;
@@ -12,6 +14,8 @@ export interface IBoardControls {
   changeHeight: (value: string) => void;
   changeWidth: (value: string) => void;
   uploadBoard: (value: string) => void;
+  ruleset: IRuleset;
+  changeGamemode: (value: string) => void;
   boardState: IBoardState;
 }
 
@@ -47,7 +51,7 @@ export class BoardControls extends React.Component<IBoardControls, IBoardControl
   public setBoardString = (value: string) => this.setState({ boardUploadString: value });
 
   render() {
-    const { height, width, changeHeight, changeWidth, uploadBoard, boardState } = this.props;
+    const { height, width, changeHeight, changeWidth, uploadBoard, changeGamemode, boardState, ruleset } = this.props;
     const boardString: string = JSON.stringify(boardState);
     return (
       <TitledContainer title="Board">
@@ -55,6 +59,9 @@ export class BoardControls extends React.Component<IBoardControls, IBoardControl
           <StyledInput title="Height" value={height} onBlur={onBlurSetMinimumFactory(changeHeight, 1)} onChange={onChangeNumberLimitFactory(changeHeight)} />
           <StyledInput title="Width" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 1)} onChange={onChangeNumberLimitFactory(changeWidth)} />
         </CenteredRow>
+				<CenteredRow>
+          <StyledDropdown title="Gamemode" value={ruleset.name} values={["standard","wrapped"]} onChange={(event: any) => changeGamemode(event.target.value)} />
+				</CenteredRow>
         <CenteredRow>
           <StyledInput placeholder="Paste Board JSON Here" onChange={event => this.setBoardString(event.target.value)} />
           <StyledButton onClick={this.uploadBoardState}>Upload</StyledButton>

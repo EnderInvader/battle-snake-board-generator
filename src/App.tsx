@@ -17,6 +17,8 @@ import { FoodControl } from './components/FoodControl/FoodControl';
 import { HazardsControl } from './components/HazardsControl/HazardsControl';
 import { YouControl } from './components/YouControl/YouControl';
 import { OtherSnakesControl } from './components/OtherSnakesControl/OtherSnakesControl';
+import { IRuleset } from './types/IRuleset.interface';
+import { getChangelog } from './components/changelog';
 
 interface IAppState {
 	id: string;
@@ -38,6 +40,7 @@ interface IAppState {
 	};
 	mode: "food" | "hazards" | "you" | "snake";
 	chosenId: string;
+	ruleset: IRuleset;
 }
 
 class App extends Component<{}, IAppState> {
@@ -59,7 +62,17 @@ class App extends Component<{}, IAppState> {
 				id: "you"
 			},
 			mode: "food",
-			chosenId: ""
+			chosenId: "",
+			ruleset: {
+				name: "standard",
+				settings: {
+					foodSpawnChance: 15,
+					minimumFood: 1,
+					hazardDamagePerTurn: 14,
+					hazardMap: "",
+					hazardMapAuthor: "",
+				}
+			}
 		}
 	}
 
@@ -163,43 +176,73 @@ class App extends Component<{}, IAppState> {
 			game: {
 				id: this.state.id,
 				ruleset: {
-					name: "standard",
-					version: "Board Generator"
+					name: this.state.ruleset.name,
+					version: "Board Generator",
+					settings: {
+						/*foodSpawnChance: this.state.ruleset.settings.foodSpawnChance,
+						minimumFood: this.state.ruleset.settings.foodSpawnChance,
+						hazardDamagePerTurn: this.state.ruleset.settings.hazardDamagePerTurn,
+						hazardMap: this.state.ruleset.settings.hazardMap,
+						hazardMapAuthor: this.state.ruleset.settings.hazardMapAuthor,*/
+						foodSpawnChance: 15,
+						minimumFood: 1,
+						hazardDamagePerTurn: 14,
+						hazardMap: "",
+						hazardMapAuthor: "",
+						royale: {
+							shrinkEveryNTurns: 25
+						},
+						squad: {
+							allowBodyCollisions: false,
+							sharedElimination: false,
+							sharedHealth: false,
+							sharedLength: false
+						}
+					}
 				},
 				map: "",
 				timeout: 500,
 				source: "",
 			},
 			turn: 123,
-			you: {
-				health: parseInt(this.state.you.health, 10),
-				id: "you",
-				name: this.state.you.colour,
-				body: this.state.you.body,
-				head: this.state.you.body[0],
-				length: this.state.you.body.length
-			},
 			board: {
-				food: this.state.food,
-				hazards: this.state.hazards,
 				height: parseInt(this.state.height, 10),
 				width: parseInt(this.state.width, 10),
 				snakes: [{
-					health: parseInt(this.state.you.health, 10),
 					id: "you",
 					name: this.state.you.colour,
+					latency: "0",
+					health: parseInt(this.state.you.health, 10),
 					body: this.state.you.body,
 					head: this.state.you.body[0],
-					length: this.state.you.body.length
+					length: this.state.you.body.length,
+					shout: "",
+					squad: "",
 				}].concat(this.state.snakes.map(snake => ({
-					health: parseInt(snake.health, 10),
 					id: snake.id,
 					name: snake.colour,
+					latency: "0",
+					health: parseInt(snake.health, 10),
 					body: snake.body,
 					head: snake.body[0],
-					length: snake.body.length
-				})))
-			}
+					length: snake.body.length,
+					shout: "",
+					squad: "",
+				}))),
+				food: this.state.food,
+				hazards: this.state.hazards,
+			},
+			you: {
+				id: "you",
+				name: this.state.you.colour,
+				latency: "0",
+				health: parseInt(this.state.you.health, 10),
+				body: this.state.you.body,
+				head: this.state.you.body[0],
+				length: this.state.you.body.length,
+				shout: "",
+				squad: "",
+			},
 		}
 	}
 
@@ -264,6 +307,12 @@ class App extends Component<{}, IAppState> {
 
 	public changeBoardWidth = (width: string) => this.setState({ width });
 
+	public changeGamemode = (value: string) => {
+		const { ruleset } = this.state;
+		ruleset.name = value
+		this.setState({ ruleset })
+	}
+
 	public uploadBoard = (board: string) => {
 		try {
 			const uploadedState: IBoardState = JSON.parse(board);
@@ -273,6 +322,10 @@ class App extends Component<{}, IAppState> {
 				width: uploadedState.board.width.toString(),
 				food: uploadedState.board.food,
 				hazards: uploadedState.board.hazards,
+				ruleset: {
+					name: uploadedState.game.ruleset.name,
+					settings: uploadedState.game.ruleset.settings
+				},
 				snakes: uploadedState.board.snakes.filter(snake => snake.id !== uploadedState.you.id).map(snake => {
 					const colour: string = generateColour();
 					return {
@@ -298,7 +351,7 @@ class App extends Component<{}, IAppState> {
 
 	render() {
 
-		const { height, width, snakes, you, food, hazards, mode, chosenId } = this.state;
+		const { height, width, snakes, you, food, hazards, mode, chosenId, ruleset } = this.state;
 
 		return (
 			<div className="App">
@@ -313,10 +366,11 @@ class App extends Component<{}, IAppState> {
 						changeWidth={this.changeBoardWidth}
 						height={height}
 						width={width}
+						ruleset={ruleset}
 						uploadBoard={this.uploadBoard}
+						changeGamemode={this.changeGamemode}
 					/>
 					<TestSnake boardState={this.buildBoardState()} />
-				 
 				</div>
 				<div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
 					<TitledContainer title="Current Mode">
@@ -326,11 +380,9 @@ class App extends Component<{}, IAppState> {
 						</div>
 					</TitledContainer>
 					<Board boardState={this.buildBoardState()} onChange={this.selectCell} />
-					<TitledContainer title="Version">
-						<p>v1</p><p>New update: "TestSnake" section is now working,<br></br> be sure to enter the full url with the /move at the end</p>
-					</TitledContainer>
-				</div>
-				<div>
+					<br></br>
+					<br></br>
+					{getChangelog()}
 				</div>
 			</div>
 		);
