@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/battle-snake-board-generator/static/css/main.2938acbe.css",
-    "main.js": "/battle-snake-board-generator/static/js/main.c2e83cde.js",
+    "main.js": "/battle-snake-board-generator/static/js/main.522e4963.js",
     "index.html": "/battle-snake-board-generator/index.html",
     "main.2938acbe.css.map": "/battle-snake-board-generator/static/css/main.2938acbe.css.map",
-    "main.c2e83cde.js.map": "/battle-snake-board-generator/static/js/main.c2e83cde.js.map"
+    "main.522e4963.js.map": "/battle-snake-board-generator/static/js/main.522e4963.js.map"
   },
   "entrypoints": [
     "static/css/main.2938acbe.css",
-    "static/js/main.c2e83cde.js"
+    "static/js/main.522e4963.js"
   ]
 }

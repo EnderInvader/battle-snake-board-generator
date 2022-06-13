@@ -37,13 +37,15 @@ export class TestSnake extends React.Component<ITestSnakeProps, ITestSnakeState>
 
     const { boardState } = this.props;
     const { url } = this.state;
-    fetch("https://lajeunesse.dev:8089/sMe", {
-      body:  "{\"url\":\""+url+"\", \"data\":"+ JSON.stringify(boardState)+"}",
+
+		fetch(url, {
       method: "POST",
-      mode : "cors",
-      headers: [
-        ["content-type", "application/json"]
-      ]
+      headers: {
+				'Accept': 'application/json, text/plain, */*',
+				'Content-Type': 'application/json'
+			},
+			mode: "cors",
+      body:  JSON.stringify(boardState),
     }).then(res => res.json()).then((move: IBoardMove) => this.setState({ response: move.move })).catch(e => {
       console.log(e);
       return e;
