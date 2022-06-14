@@ -1,6 +1,5 @@
 import React from "react";
 import { IBoardState } from "../types/IBoardState.interface";
-import { ISnake } from "../types/ISnake.interface";
 import { CellComponent } from "./CellComponent/CellComponent";
 
 export interface IBoard {
