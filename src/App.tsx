@@ -361,6 +361,16 @@ class App extends Component<{}, IAppState> {
 					})
 				}
 
+				if (_map.gamemode) {
+					const { ruleset } = this.state;
+					ruleset.name = _map.gamemode
+					this.setState({ ruleset })
+				} else {
+					const { ruleset } = this.state;
+					ruleset.name = "standard"
+					this.setState({ ruleset })
+				}
+
 				if (_map.hazardDamagePerTurn) {
 					const { ruleset } = this.state;
 					ruleset.settings.hazardDamagePerTurn = _map.hazardDamagePerTurn.toString()

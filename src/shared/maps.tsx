@@ -6,6 +6,8 @@ export interface IMap {
 
   height?: number;
 	width?: number;
+	
+	gamemode?: string;
 
 	hazardDamagePerTurn?: number;
 
@@ -20,6 +22,8 @@ export function getMapsList(): IMap[] {
 
 			height: 21,
 			width: 19,
+			
+			gamemode: "wrapped",
 
 			hazardDamagePerTurn: 100,
 
