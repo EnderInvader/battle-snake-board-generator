@@ -1,5 +1,5 @@
 export interface IRuleset {
-  name: string /*"standard" | "wrapped";*/
+  name: string;
 	settings: {
 		foodSpawnChance: number,
 		minimumFood: number,

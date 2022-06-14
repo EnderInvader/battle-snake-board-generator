@@ -1,25 +1,21 @@
-import React, { Component, Ref } from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+/*import logo from './logo.svg';*/
 import './App.css';
 import { IBoardState } from './types/IBoardState.interface';
 import { Board } from './components/board';
 import { ICoordinate } from './types/ICoordinate.type';
-import { SnakeControl } from './components/SnakeControl/SnakeControl';
-import { IBoardMove } from './types/IBoardMove';
 import { TitledContainer } from './components/TitledContainer/TitledContainer';
 import { BoardControls } from './components/BoardControls/BoardControls';
-import { StyledButton } from './components/StyledButton/StyledButton';
 import { generateColour, generateId } from './shared/utils';
 import { TestSnake } from './components/TestSnake/TestSnake';
-import { CenteredRow } from './components/CenteredRow/CenteredRow';
 import { ColourSquare } from './components/ColourSquare/ColourSquare';
 import { FoodControl } from './components/FoodControl/FoodControl';
 import { HazardsControl } from './components/HazardsControl/HazardsControl';
 import { YouControl } from './components/YouControl/YouControl';
 import { OtherSnakesControl } from './components/OtherSnakesControl/OtherSnakesControl';
-import { IRuleset } from './types/IRuleset.interface';
-import { getChangelog } from './components/changelog';
+import { getChangelog } from './shared/changelog';
 import { RulesetControls } from './components/RulesetControls/RulesetControls';
+import { getMapsList } from './shared/maps';
 
 interface IAppState {
 	id: string;
@@ -41,7 +37,17 @@ interface IAppState {
 	};
 	mode: "food" | "hazards" | "you" | "snake";
 	chosenId: string;
-	ruleset: IRuleset;
+	ruleset: {
+		name: string
+		settings: {
+			foodSpawnChance: string,
+			minimumFood: string,
+			hazardDamagePerTurn: string,
+			hazardMap: string,
+			hazardMapAuthor: string,
+		}
+	};
+	map: string;
 }
 
 class App extends Component<{}, IAppState> {
@@ -67,13 +73,14 @@ class App extends Component<{}, IAppState> {
 			ruleset: {
 				name: "standard",
 				settings: {
-					foodSpawnChance: 15,
-					minimumFood: 1,
-					hazardDamagePerTurn: 14,
+					foodSpawnChance: "20",
+					minimumFood: "1",
+					hazardDamagePerTurn: "14",
 					hazardMap: "",
 					hazardMapAuthor: "",
 				}
-			}
+			},
+			map: ""
 		}
 	}
 
@@ -180,9 +187,9 @@ class App extends Component<{}, IAppState> {
 					name: this.state.ruleset.name,
 					version: "Board Generator",
 					settings: {
-						foodSpawnChance: this.state.ruleset.settings.foodSpawnChance,
-						minimumFood: this.state.ruleset.settings.foodSpawnChance,
-						hazardDamagePerTurn: this.state.ruleset.settings.hazardDamagePerTurn,
+						foodSpawnChance: parseInt(this.state.ruleset.settings.foodSpawnChance, 10),
+						minimumFood: parseInt(this.state.ruleset.settings.minimumFood, 10),
+						hazardDamagePerTurn: parseInt(this.state.ruleset.settings.hazardDamagePerTurn, 10),
 						/*hazardMap: this.state.ruleset.settings.hazardMap,
 						hazardMapAuthor: this.state.ruleset.settings.hazardMapAuthor,*/
 						hazardMap: "",
@@ -198,7 +205,7 @@ class App extends Component<{}, IAppState> {
 						}
 					}
 				},
-				map: "",
+				map: this.state.map,
 				timeout: 500,
 				source: "",
 			},
@@ -216,6 +223,11 @@ class App extends Component<{}, IAppState> {
 					length: this.state.you.body.length,
 					shout: "",
 					squad: "",
+					customizations: {	
+						color: this.state.you.colour,	
+						head: "default",	
+						tail: "default",
+					}
 				}].concat(this.state.snakes.map(snake => ({
 					id: snake.id,
 					name: snake.colour,
@@ -225,7 +237,12 @@ class App extends Component<{}, IAppState> {
 					head: snake.body[0],
 					length: snake.body.length,
 					shout: "",
-					squad: "",
+					squad: "",	
+					customizations: {	
+						color: snake.colour,	
+						head: "default",	
+						tail: "default",
+					}
 				}))),
 				food: this.state.food,
 				hazards: this.state.hazards,
@@ -240,6 +257,11 @@ class App extends Component<{}, IAppState> {
 				length: this.state.you.body.length,
 				shout: "",
 				squad: "",
+				customizations: {	
+					color: this.state.you.colour,	
+					head: "default",	
+					tail: "default",
+				}
 			},
 		}
 	}
@@ -301,27 +323,86 @@ class App extends Component<{}, IAppState> {
 		}
 	}
 
-	public changeBoardHeight = (height: string) => this.setState({ height });
-	public changeBoardWidth = (width: string) => this.setState({ width });
+	public changeBoardHeight = (height: string) => {
+		if (this.state.map === "arcade_maze") {
+			this.setState({ height: "21" })
+		} else {
+			this.setState({ height })
+		}
+	}
+	public changeBoardWidth = (width: string) => {
+		if (this.state.map === "arcade_maze") {
+			this.setState({ width: "19" })
+		} else {
+			this.setState({ width })
+		}
+	}
+	public changeBoardMap = (map: string) => {
+		this.setState({ map })
+		for (let _map of getMapsList()) {
+			if (_map.value === map) {
+				if (_map.height) {
+					this.setState({
+						height: _map.height.toString()
+					})
+				} else {
+					this.setState({
+						height: "11"
+					})
+				}
 
-	public changeRulesetName = (value: string) => {
+				if (_map.width) {
+					this.setState({
+						width: _map.width.toString()
+					})
+				} else {
+					this.setState({
+						width: "11"
+					})
+				}
+
+				if (_map.hazardDamagePerTurn) {
+					const { ruleset } = this.state;
+					ruleset.settings.hazardDamagePerTurn = _map.hazardDamagePerTurn.toString()
+					this.setState({ ruleset })
+				} else {
+					const { ruleset } = this.state;
+					ruleset.settings.hazardDamagePerTurn = "14"
+					this.setState({ ruleset })
+				}
+
+				if (_map.hazards) {
+					this.setState({
+						hazards: _map.hazards
+					})
+				} else {
+					this.setState({
+						hazards: []
+					})
+				}
+				break
+			}
+		}
+	}
+
+	public changeRulesetName = (rulesetName: string) => {
 		const { ruleset } = this.state;
-		ruleset.name = value
+		ruleset.name = rulesetName
 		this.setState({ ruleset })
 	}
-	public changeFoodSpawn = (value: string) => {
+	public changeFoodSpawn = (foodSpawnChance: string) => {
 		const { ruleset } = this.state;
-		ruleset.name = value
+		ruleset.settings.foodSpawnChance = foodSpawnChance
 		this.setState({ ruleset })
 	}
-	public changeMinFood = (value: string) => {
+	public changeMinFood = (minimumFood: string) => {
 		const { ruleset } = this.state;
-		ruleset.name = value
+		ruleset.settings.minimumFood = minimumFood
 		this.setState({ ruleset })
 	}
-	public changeHazardDamage = (value: string) => {
+	public changeHazardDamage = (hazardDamagePerTurn: string) => {
 		const { ruleset } = this.state;
-		ruleset.name = value
+		ruleset.settings.hazardDamagePerTurn = hazardDamagePerTurn
 		this.setState({ ruleset })
 	}
 
@@ -336,8 +417,17 @@ class App extends Component<{}, IAppState> {
 				hazards: uploadedState.board.hazards,
 				ruleset: {
 					name: uploadedState.game.ruleset.name,
-					settings: uploadedState.game.ruleset.settings
+					settings: {
+						foodSpawnChance: uploadedState.game.ruleset.settings.foodSpawnChance.toString(),
+						minimumFood: uploadedState.game.ruleset.settings.minimumFood.toString(),
+						hazardDamagePerTurn: uploadedState.game.ruleset.settings.hazardDamagePerTurn.toString(),
+						/*hazardMap: uploadedState.game.ruleset.settings.hazardMap,
+						hazardMapAuthor: uploadedState.game.ruleset.settings.hazardMapAuthor,*/
+						hazardMap: "",
+						hazardMapAuthor: ""
+					}
 				},
+				map: uploadedState.game.map,
 				snakes: uploadedState.board.snakes.filter(snake => snake.id !== uploadedState.you.id).map(snake => {
 					const colour: string = generateColour();
 					return {
@@ -354,7 +444,7 @@ class App extends Component<{}, IAppState> {
 					id: "you"
 				},
 				mode: "food",
-				chosenId: ""
+				chosenId: "",
 			});
 		} catch (e) {
 			alert("That didn't work");
@@ -363,7 +453,7 @@ class App extends Component<{}, IAppState> {
 
 	render() {
 
-		const { height, width, snakes, you, food, hazards, mode, chosenId, ruleset } = this.state;
+		const { height, width, map, snakes, you, food, hazards, mode, chosenId, ruleset } = this.state;
 
 		return (
 			<div className="App">
@@ -373,15 +463,20 @@ class App extends Component<{}, IAppState> {
 					<FoodControl foodCount={food.length} selectFood={this.selectFood} />
 					<HazardsControl hazardsCount={hazards.length} selectHazards={this.selectHazards} />
 					<BoardControls
-						boardState={this.buildBoardState()}
-						changeHeight={this.changeBoardHeight}
-						changeWidth={this.changeBoardWidth}
 						height={height}
 						width={width}
+						map={map}
+						changeHeight={this.changeBoardHeight}
+						changeWidth={this.changeBoardWidth}
+						changeMap={this.changeBoardMap}
 						uploadBoard={this.uploadBoard}
+						boardState={this.buildBoardState()}
 					/>
 					<RulesetControls
-						ruleset={ruleset}
+						rulesetName={ruleset.name}
+						foodSpawnChance={ruleset.settings.foodSpawnChance}
+						minimumFood={ruleset.settings.minimumFood}
+						hazardDamagePerTurn={ruleset.settings.hazardDamagePerTurn}
 						changeName={this.changeRulesetName}
 						changeFoodSpawn={this.changeFoodSpawn}
 						changeMinFood={this.changeMinFood}

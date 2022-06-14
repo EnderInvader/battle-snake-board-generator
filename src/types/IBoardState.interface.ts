@@ -13,6 +13,7 @@ export interface IBoardState {
   game: {
     id: string;
 		ruleset: IRuleset;
+		map: string;
   };
   turn: number;
   you: ISnake;

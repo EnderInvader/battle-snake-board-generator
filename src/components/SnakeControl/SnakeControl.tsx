@@ -17,7 +17,7 @@ export class SnakeControl extends React.Component<ISnakeControl, {}> {
 
   render() {
 
-    const { colour, health, selectSnake, title, changeHealth } = this.props;
+    const { colour, health, selectSnake, changeHealth } = this.props;
 
     return (
       <div className="snake-control-container">
@@ -27,7 +27,7 @@ export class SnakeControl extends React.Component<ISnakeControl, {}> {
         <div className="vertical-flex-container">
           <span>{colour}</span>
           <div>
-            <StyledInput title="Health" value={health} onBlur={onBlurSetMinimumFactory(changeHealth)} onChange={onChangeNumberLimitFactory(changeHealth, 100)} />
+            <StyledInput title="Health" value={health} onBlur={onBlurSetMinimumFactory(changeHealth, 100, 1)} onChange={onChangeNumberLimitFactory(changeHealth, 100, 0)} />
           </div>
         </div>
       </div>

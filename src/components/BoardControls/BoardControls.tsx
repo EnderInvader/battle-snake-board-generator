@@ -5,12 +5,15 @@ import { StyledButton } from "../StyledButton/StyledButton";
 import { CenteredRow } from "../CenteredRow/CenteredRow";
 import { TitledContainer } from "../TitledContainer/TitledContainer";
 import { IBoardState } from "../../types/IBoardState.interface";
+import { StyledDropdown } from "../StyledDropdown/StyledDropdown";
 
 export interface IBoardControls {
   height: string;
   width: string;
+  map: string;
   changeHeight: (value: string) => void;
   changeWidth: (value: string) => void;
+  changeMap: (value: string) => void;
   uploadBoard: (value: string) => void;
   boardState: IBoardState;
 }
@@ -47,16 +50,16 @@ export class BoardControls extends React.Component<IBoardControls, IBoardControl
   public setBoardString = (value: string) => this.setState({ boardUploadString: value });
 
   render() {
-    const { height, width, changeHeight, changeWidth, uploadBoard, boardState } = this.props;
+    const { height, width, map, changeHeight, changeWidth, changeMap, boardState } = this.props;
     const boardString: string = JSON.stringify(boardState);
     return (
       <TitledContainer title="Board">
         <CenteredRow>
-          <StyledInput title="Height" value={height} onBlur={onBlurSetMinimumFactory(changeHeight, 2)} onChange={onChangeNumberLimitFactory(changeHeight, 50, 2)} />
-          <StyledInput title="Width" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 2)} onChange={onChangeNumberLimitFactory(changeWidth, 50, 2)} />
+          <StyledInput title="Height" value={height} onBlur={onBlurSetMinimumFactory(changeHeight, 50, 2)} onChange={onChangeNumberLimitFactory(changeHeight)} />
+          <StyledInput title="Width" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 50, 2)} onChange={onChangeNumberLimitFactory(changeWidth)} />
         </CenteredRow>
 				<CenteredRow>
-				<StyledInput title="Map" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 1)} onChange={onChangeNumberLimitFactory(changeWidth)} />
+					<StyledDropdown title="Map" value={map} values={[{name:"standard",value:""},{name:"arcade_maze",value:"arcade_maze"}]} onChange={(event: any) => changeMap(event.target.value)} />
 				</CenteredRow>
         <CenteredRow>
           <StyledInput placeholder="Paste Board JSON Here" onChange={event => this.setBoardString(event.target.value)} />

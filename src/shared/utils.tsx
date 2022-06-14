@@ -22,12 +22,15 @@ export const onChangeNumberLimitFactory = (target: (...arg: any) => void, max: n
   }
 }
 
-export const onBlurSetMinimumFactory = (target: (...arg: any) => void, min: number = 0) => {
+export const onBlurSetMinimumFactory = (target: (...arg: any) => void, max: number = 100, min: number = 0) => {
   return (event: React.FocusEvent<HTMLInputElement>, ) => {
     let value = event.target.value;
 
     if (/[\D]/.test(value)) {
       return;
+    }
+    if (parseInt(value, 10) > max) {
+      value = max.toString();
     }
     if (parseInt(value, 10) < min || !value) {
       value = min.toString();
