@@ -55,8 +55,8 @@ export class BoardControls extends React.Component<IBoardControls, IBoardControl
     return (
       <TitledContainer title="Board">
         <CenteredRow>
-          <StyledInput title="Height" value={height} onBlur={onBlurSetMinimumFactory(changeHeight, 50, 2)} onChange={onChangeNumberLimitFactory(changeHeight)} />
-          <StyledInput title="Width" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 50, 2)} onChange={onChangeNumberLimitFactory(changeWidth)} />
+          <StyledInput title="Height" value={height} onBlur={onBlurSetMinimumFactory(changeHeight, 50, 2)} onChange={onChangeNumberLimitFactory(changeHeight, 50)} />
+          <StyledInput title="Width" value={width} onBlur={onBlurSetMinimumFactory(changeWidth, 50, 2)} onChange={onChangeNumberLimitFactory(changeWidth, 50)} />
         </CenteredRow>
 				<CenteredRow>
 					<StyledDropdown title="Map" value={map} values={[{name:"standard",value:""},{name:"arcade_maze",value:"arcade_maze"}]} onChange={(event: any) => changeMap(event.target.value)} />
