@@ -185,7 +185,7 @@ class App extends Component<{}, IAppState> {
 				id: this.state.id,
 				ruleset: {
 					name: this.state.ruleset.name,
-					version: "Board Generator",
+					version: "board-generator",
 					settings: {
 						foodSpawnChance: parseInt(this.state.ruleset.settings.foodSpawnChance, 10),
 						minimumFood: parseInt(this.state.ruleset.settings.minimumFood, 10),

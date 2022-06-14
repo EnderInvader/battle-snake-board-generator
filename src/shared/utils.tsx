@@ -39,4 +39,4 @@ export const onBlurSetMinimumFactory = (target: (...arg: any) => void, max: numb
   }
 }
 
-export const generateId = () => "board-generator " + Math.floor((Math.random() * 1000000)).toString()
+export const generateId = () => "board-generator-" + Math.floor((Math.random() * 1000000)).toString()
