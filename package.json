@@ -10,9 +10,11 @@
     "@types/react-dom": "16.0.11",
     "buildnpm": "^1.0.4",
     "react": "^16.14.0",
+    "react-color": "^2.19.3",
     "react-dom": "^16.14.0",
     "react-scripts": "^5.0.1",
     "react-select": "^5.3.2",
+    "reactcss": "^1.2.3",
     "typescript": "^3.9.7",
     "typescript-eslint": "0.0.1-alpha.0",
     "typescript-estree": "^18.1.0"
@@ -35,6 +37,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/react-color": "^3.0.6",
+    "@types/reactcss": "^1.2.6",
     "gh-pages": "2.0.1"
   }
 }
