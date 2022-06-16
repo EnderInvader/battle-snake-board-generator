@@ -6,7 +6,7 @@ import { Board } from './components/board';
 import { ICoordinate } from './types/ICoordinate.type';
 import { TitledContainer } from './components/TitledContainer/TitledContainer';
 import { BoardControls } from './components/BoardControls/BoardControls';
-import { generateColour, generateId } from './shared/utils';
+import { generateColour, generateId, getColorArray, getFoodColor, getHazardColor, getYouColor } from './shared/utils';
 import { TestSnake } from './components/TestSnake/TestSnake';
 import { ColourSquare } from './components/ColourSquare/ColourSquare';
 import { FoodControl } from './components/FoodControl/FoodControl';
@@ -63,7 +63,7 @@ class App extends Component<{}, IAppState> {
 			hazards: [],
 			snakes: [],
 			you: {
-				colour: "#22aa34",
+				colour: getYouColor(),
 				body: [],
 				health: "100",
 				id: "you"
@@ -267,14 +267,29 @@ class App extends Component<{}, IAppState> {
 	}
 
 	public addSnake = () => {
-		const colour = generateColour();
 		const { snakes } = this.state;
+		const colorArray = getColorArray()
+		let colour = ""
+
+		if(snakes.length <= colorArray.length) {
+			colour = colorArray[snakes.length]
+		} else {
+			colour = generateColour()
+		}
+
 		snakes.push({
 			body: [],
 			colour: colour,
 			health: "100",
-			id: colour
+			id: "Snake".concat((snakes.length+1).toString())
 		});
+
+		this.setState({ snakes })
+	}
+
+	public removeSnake = () => {
+		const { snakes } = this.state;
+		snakes.pop()
 
 		this.setState({ snakes })
 	}
@@ -438,17 +453,17 @@ class App extends Component<{}, IAppState> {
 					}
 				},
 				map: uploadedState.game.map,
-				snakes: uploadedState.board.snakes.filter(snake => snake.id !== uploadedState.you.id).map(snake => {
-					const colour: string = generateColour();
+				snakes: uploadedState.board.snakes.filter(snake => snake.id !== uploadedState.you.id).map((snake, i) => {
+					const colour: string = getColorArray()[i]
 					return {
-						id: colour,
+						id: "Snake".concat((i+1).toString()),
 						colour: colour,
 						body: snake.body,
 						health: snake.health.toString(),
 					}
 				}),
 				you: {
-					colour: "#22aa34",
+					colour: getYouColor(),
 					body: uploadedState.you.body,
 					health: uploadedState.you.health.toString(),
 					id: "you"
@@ -469,7 +484,7 @@ class App extends Component<{}, IAppState> {
 			<div className="App">
 				<div className="control-container">
 					<YouControl selectYou={this.selectYou} colour={you.colour} health={you.health} changeHealth={(value) => this.changeSnakeHealth(value, "you")} />
-					<OtherSnakesControl addSnake={this.addSnake} changeSnakeHealth={this.changeSnakeHealth} selectSnake={this.selectSnake} snakes={snakes} />
+					<OtherSnakesControl addSnake={this.addSnake} removeSnake={this.removeSnake} changeSnakeHealth={this.changeSnakeHealth} selectSnake={this.selectSnake} snakes={snakes} />
 					<FoodControl foodCount={food.length} selectFood={this.selectFood} />
 					<HazardsControl hazardsCount={hazards.length} selectHazards={this.selectHazards} />
 					<BoardControls
@@ -510,7 +525,7 @@ class App extends Component<{}, IAppState> {
 				<div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
 					<TitledContainer title="Current Mode">
 						<div className="current-mode">
-							<ColourSquare colour={mode === "food" ? "orange" : mode === "hazards" ? "red" : mode === "you" ? "#22aa34" : chosenId} />
+							<ColourSquare colour={mode === "food" ? getFoodColor() : mode === "hazards" ? getHazardColor() : mode === "you" ? getYouColor() : snakes.find(snake => snake.id === chosenId)?.colour ?? "" } />
 							<span style={{ marginLeft: 10 }}>{mode !== "snake" ? mode : chosenId}</span>
 						</div>
 					</TitledContainer>

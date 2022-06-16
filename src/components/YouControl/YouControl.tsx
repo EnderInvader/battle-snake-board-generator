@@ -9,8 +9,8 @@ export interface IYouControl {
   changeHealth: (health: string) => void;
 }
 
-export const YouControl: React.FC<IYouControl> = ({ selectYou, colour, health, changeHealth, }) => (
+export const YouControl: React.FC<IYouControl> = ({ selectYou, colour, health, changeHealth }) => (
   <TitledContainer title="You">
-    <SnakeControl selectSnake={selectYou} colour={colour} health={health} changeHealth={changeHealth} />
+    <SnakeControl selectSnake={selectYou} name={"You"} colour={colour} health={health} changeHealth={changeHealth} />
   </TitledContainer>
 );
