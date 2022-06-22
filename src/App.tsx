@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-/*import logo from './logo.svg';*/
 import './App.css';
 import { IBoardState } from './types/IBoardState.interface';
 import { Board } from './components/board';
